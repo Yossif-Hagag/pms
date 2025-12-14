@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -21,6 +22,14 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $roles = ['admin', 'manager', 'user'];
+            $user->assignRole($roles[array_rand($roles)]);
+        });
+    }
+
     public function definition(): array
     {
         return [
