@@ -17,7 +17,7 @@ enum TaskPriority: string
         };
     }
 
-    public function badge(): string
+    public function color(): string
     {
         return match ($this) {
             self::Low => 'success',

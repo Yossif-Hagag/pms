@@ -1,19 +1,52 @@
-<div>
-    <div>
-        <h2 class="text-xl font-bold mb-4">Tasks</h2>
-        <div class="grid grid-cols-3 gap-4">
-            @foreach (['todo', 'in_progress', 'done'] as $status)
-                <div>
-                    <h3 class="font-semibold capitalize">{{ $status }}</h3>
-                    @foreach ($tasks->where('status', $status) as $task)
-                        <div class="border p-2 mb-2">
-                            <div>{{ $task->title }}</div>
-                            <div class="text-xs text-gray-500">{{ $task->project->name }}</div>
-                        </div>
-                    @endforeach
-                </div>
-            @endforeach
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Tasks Board</h2>
+        @can('create task')
+            <a href="{{ route('tasks.create') }}" class="btn btn-primary">Add Task</a>
+        @endcan
+    </div>
+
+    @if (session()->has('message'))
+        <div class="alert alert-success">{{ session('message') }}</div>
+    @endif
+
+    <div wire:loading wire:target="delete" class="text-center mb-3">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 
+    <div class="row">
+        @foreach (['todo', 'in_progress', 'done'] as $status)
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header text-capitalize font-weight-bold">
+                        {{ str_replace('_', ' ', $status) }}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach ($tasks->where('status', $status) as $task)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-bold">{{ $task->title }}</div>
+                                    <div class="text-muted small">{{ $task->project->name }}</div>
+                                    <div class="text-muted small">Assigned: {{ $task->assignedUser?->name ?? 'N/A' }}
+                                    </div>
+                                </div>
+                                <div class="btn-group btn-group-sm">
+                                    @can('edit task')
+                                        <a href="{{ route('tasks.edit', $task) }}" class="btn btn-outline-primary">Edit</a>
+                                    @endcan
+                                    @can('delete task')
+                                        <button wire:click="delete({{ $task->id }})"
+                                            class="btn btn-outline-danger">Delete</button>
+                                    @endcan
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endforeach
+    </div>
 </div>

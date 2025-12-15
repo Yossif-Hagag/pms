@@ -20,9 +20,9 @@ enum TaskStatus: string
     public function color(): string
     {
         return match ($this) {
-            self::Todo => 'gray',
-            self::InProgress => 'blue',
-            self::Done => 'green',
+            self::Todo => 'secondary',
+            self::InProgress => 'primary',
+            self::Done => 'success',
         };
     }
 

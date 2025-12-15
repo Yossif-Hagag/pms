@@ -11,7 +11,22 @@ class ProjectIndex extends Component
 
     public function mount()
     {
-        $this->projects = Project::with('users')->get();
+        $this->loadProjects();
+    }
+
+    public function loadProjects()
+    {
+        $this->projects = Project::with('user', 'tasks')->get();
+    }
+
+    public function delete(Project $project)
+    {
+        if ($project->tasks()->count() > 0) {
+            return back()->with('error', 'Cannot delete project with tasks!');
+        }
+        $project->delete();
+        session()->flash('message', 'Project deleted successfully!');
+        $this->loadProjects();
     }
 
     public function render()
