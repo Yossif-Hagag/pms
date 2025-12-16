@@ -81,9 +81,8 @@
                 </ul>
 
                 <!-- Logout -->
-                <button wire:click="logout" class="btn btn-outline-danger mt-auto text-start mb-2">
-                    <i class="bi bi-box-arrow-right me-2"></i><span class="linkTitles"> Log Out</span>
-                </button>
+                <livewire:logout-button />
+
 
                 <!-- Toggle Arrow -->
                 <button id="sidebarToggle"
