@@ -4,7 +4,7 @@
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="mb-0 fw-bold fs-3">{{ $project->name }}</h3>
-                <a href="{{ route('projects.index') }}" class="btn btn-secondary">
+                <a wire:navigate href="{{ route('projects.index') }}" class="btn btn-secondary">
                     <i class="bi bi-arrow-left-circle me-2"></i>
                     Back to Projects
                 </a>

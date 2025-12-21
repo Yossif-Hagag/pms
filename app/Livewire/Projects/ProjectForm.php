@@ -62,9 +62,26 @@ class ProjectForm extends Component
             $this->project = Project::create($data);
         }
 
-        session()->flash('message', 'Project saved successfully!');
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => 'Project saved successfully!',
+        ]);
 
-        return redirect()->route('projects.index');
+        // $this->redirect(
+        //     route('projects.index'),
+        //     navigate: true
+        // );
+        $this->emitTo('projects.project-index', 'refreshList');
+        $this->resetForm();
+    }
+
+    public function resetForm()
+    {
+        $this->project = null;
+        $this->name = '';
+        $this->description = null;
+        $this->status = null;
+        $this->user_id = null;
     }
 
     public function render()

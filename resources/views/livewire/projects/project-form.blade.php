@@ -3,8 +3,14 @@
         <div class="col-md-8">
 
             <div class="bg-white p-5 rounded-4 shadow-sm border">
-                <h3 class="fs-2 fw-bold mb-4 text-center text-{{ $project ? 'primary' : 'success' }}">
-                    {{ $project ? 'Update Project' : 'Create Project' }}</h3>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fs-2 fw-bold text-center text-{{ $project ? 'primary' : 'success' }}">
+                        {{ $project ? 'Update Project' : 'Create Project' }}</h3>
+                    <a wire:navigate href="{{ route('projects.index') }}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left-circle me-2"></i>
+                        Back to Projects
+                    </a>
+                </div>
 
                 <form wire:submit.prevent="save">
 

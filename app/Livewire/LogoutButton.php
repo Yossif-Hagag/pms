@@ -14,7 +14,7 @@ class LogoutButton extends Component
         Session::invalidate();
         Session::regenerateToken();
 
-        return redirect()->route('login');
+        $this->redirect(route('login'), navigate: true);
     }
 
     public function render()

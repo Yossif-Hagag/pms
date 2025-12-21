@@ -3,6 +3,7 @@
 namespace App\Livewire\Projects;
 
 use App\Models\Project;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ProjectIndex extends Component
@@ -19,13 +20,32 @@ class ProjectIndex extends Component
         $this->projects = Project::with('user', 'tasks')->get();
     }
 
-    public function delete(Project $project)
+    #[On('refreshList')]
+    public function refreshList()
     {
-        if ($project->tasks()->count() > 0) {
-            return back()->with('error', 'Cannot delete project with tasks!');
+        $this->loadProjects();
+    }
+
+    #[On('delete-project')]
+    public function deleteProject($id)
+    {
+        $project = Project::findOrFail($id);
+
+        if ($project->tasks()->exists()) {
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => 'Cannot delete project with tasks!',
+            ]);
+
+            return;
         }
+
         $project->delete();
-        session()->flash('message', 'Project deleted successfully!');
+
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => 'Project deleted successfully!',
+        ]);
         $this->loadProjects();
     }
 

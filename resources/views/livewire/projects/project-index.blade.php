@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="fs-4 fw-bold">Projects Dashboard</h1>
         {{-- @can('create project') --}}
-        <a href="{{ route('projects.create') }}" class="btn btn-success">Create Project</a>
+        <a wire:navigate href="{{ route('projects.create') }}" class="btn btn-success">Create Project</a>
         {{-- @endcan --}}
     </div>
 
@@ -51,7 +51,7 @@
             </thead>
             <tbody>
                 @foreach ($projects as $project)
-                    <tr>
+                    <tr class="">
                         <td>{{ $project->name }}</td>
                         <td class="text-capitalize">
                             <span class="badge bg-{{ $project->status->color() }}">
@@ -60,25 +60,25 @@
                         </td>
                         <td>{{ $project->user?->name ?? 'N/A' }}</td>
                         <td>{{ $project->tasks->count() }}</td>
-                        <td class="text-center">
+                        <td class="d-flex justify-content-center align-content-center">
                             {{-- @can('view project') --}}
-                            <a href="{{ route('projects.view', $project) }}" class="btn btn-sm btn-info me-1"
-                                wire:loading.attr="disabled">
-                                <i class="bi bi-eye"></i> View
+                            <a wire:navigate href="{{ route('projects.view', $project) }}"
+                                class="btn btn-sm btn-info me-1" wire:loading.attr="disabled">
+                                <i class="bi bi-eye"></i>
                             </a>
                             {{-- @endcan --}}
                             {{-- @can('edit project') --}}
-                            <a href="{{ route('projects.edit', $project) }}" class="btn btn-sm btn-primary me-1"
-                                wire:loading.attr="disabled">
-                                <i class="bi bi-pencil"></i> Edit
+                            <a wire:navigate href="{{ route('projects.edit', $project) }}"
+                                class="btn btn-sm btn-primary me-1" wire:loading.attr="disabled">
+                                <i class="bi bi-pencil"></i>
                             </a>
                             {{-- @endcan --}}
                             {{-- @can('delete project') --}}
-                            <button wire:click="delete({{ $project->id }})" class="btn btn-sm btn-danger"
-                                wire:loading.attr="disabled">
-                                <span wire:loading.remove><i class="bi bi-trash"></i> Delete</span>
-                                <span wire:loading><span class="spinner-border spinner-border-sm"></span></span>
+                            <button wire:click="$dispatch('confirm-delete', { id: {{ $project->id }} })"
+                                class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
                             </button>
+
                             {{-- @endcan --}}
                         </td>
 

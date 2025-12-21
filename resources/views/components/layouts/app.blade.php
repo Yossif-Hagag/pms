@@ -18,6 +18,45 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
 
+    <style>
+        #sidebar.collapsed .nav-link span,
+        #sidebar.collapsed span.linkTitles {
+            display: none;
+        }
+
+        #sidebarToggle {
+            border: none;
+            background-color: white;
+        }
+
+        #sidebar .nav-link {
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        #sidebar .nav-link.active {
+            background-color: #0d6efd;
+            color: white !important;
+        }
+
+        #sidebar .nav-link.active:hover {
+            background-color: #0d6efd;
+            color: white !important;
+        }
+
+        #sidebar .nav-link:hover {
+            background-color: #e9ecef;
+            color: #000 !important;
+        }
+
+        #sidebar .nav-link.logout:hover {
+            background-color: #e9ecef;
+            color: red !important;
+        }
+    </style>
+
+
     <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -52,28 +91,28 @@
             <div class="d-flex flex-column h-100 px-1">
 
                 <!-- Logo -->
-                <a href="{{ route('dashboard') }}"
-                    class="mmx-2 my-3 d-flex align-items-center mb-4 text-decoration-none">
+                <a wire:navigate href="{{ route('dashboard') }}"
+                    class="mmx-2 my-3 d-flex align-items-center mb-5 text-decoration-none">
                     <x-application-logo class="me-2" style="height: 40px; width:auto;" />
-                    <span class="fs-5 fw-bold linkTitles">PMS</span>
+                    <span class="fs-5 fw-bold linkTitles mx-2">PMS</span>
                 </a>
 
                 <!-- Navigation Links -->
-                <ul class="nav nav-pills flex-column flex-grow-1">
+                <ul class="nav nav-pills flex-column">
                     <li class="nav-item mb-1">
-                        <a href="{{ route('dashboard') }}"
+                        <a wire:navigate href="{{ route('dashboard') }}"
                             class="nav-link text-black {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                             <i class="bi bi-speedometer2 me-2"></i><span class="linkTitles"> Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item mb-1">
-                        <a href="{{ route('projects.index') }}"
+                        <a wire:navigate href="{{ route('projects.index') }}"
                             class="nav-link text-black {{ request()->routeIs('projects.*') ? 'active' : '' }}">
                             <i class="bi bi-kanban me-2"></i><span class="linkTitles"> Projects</span>
                         </a>
                     </li>
                     <li class="nav-item mb-1">
-                        <a href="{{ route('profile') }}"
+                        <a wire:navigate href="{{ route('profile') }}"
                             class="nav-link text-black {{ request()->routeIs('profile') ? 'active' : '' }}">
                             <i class="bi bi-person-circle me-2"></i><span class="linkTitles"> Profile</span>
                         </a>
@@ -86,8 +125,8 @@
 
                 <!-- Toggle Arrow -->
                 <button id="sidebarToggle"
-                    class="btn btn-light position-absolute top-50 end-0 translate-middle-y rounded-circle shadow-sm"
-                    style="width: 35px; height: 35px; z-index: 999;">
+                    class="btn btn-light position-absolute top-50 end-0 translate-middle-y rounded-circle shadow-sm d-flex justify-content-center align-content-center"
+                    style="width: 35px; height: 35px; z-index: 999;color:#0d6efd">
                     <i class="bi bi-chevron-left"></i>
                 </button>
             </div>
@@ -99,60 +138,81 @@
         </main>
     </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Livewire Scripts -->
+    @livewireScripts
+    {{-- SweetAlert Js --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        const sidebar = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('sidebarToggle');
-        const mainContent = document.getElementById('mainContent');
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('confirm-delete', ({
+                id
+            }) => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This project will be deleted permanently!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('delete-project', {
+                            id: id
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('toast', (payload) => {
+                const data = Array.isArray(payload) ? payload[0] : payload;
 
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            if (sidebar.classList.contains('collapsed')) {
-                sidebar.style.width = '65px';
-                mainContent.style.marginLeft = '0px';
-                toggleBtn.querySelector('i').classList.remove('bi-chevron-left');
-                toggleBtn.querySelector('i').classList.add('bi-chevron-right');
-            } else {
-                sidebar.style.width = '250px';
-                mainContent.style.marginLeft = '0px';
-                toggleBtn.querySelector('i').classList.remove('bi-chevron-right');
-                toggleBtn.querySelector('i').classList.add('bi-chevron-left');
-            }
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: data.type ?? 'success',
+                    title: data.message ?? '',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            });
         });
     </script>
 
-    <style>
-        #sidebar.collapsed .nav-link span,
-        #sidebar.collapsed span.linkTitles {
-            display: none;
-        }
-
-        #sidebarToggle {
-            border: none;
-            background-color: white;
-        }
-
-        #sidebar .nav-link {
-            border-radius: 8px;
-            margin-bottom: 4px;
-            transition: all 0.2s;
-        }
-
-        #sidebar .nav-link.active {
-            background-color: #0d6efd;
-            color: white !important;
-        }
-
-        #sidebar .nav-link:hover {
-            background-color: #e9ecef;
-        }
-    </style>
 
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Livewire Scripts -->
-    @livewireScripts
+    <script>
+        document.addEventListener('livewire:init', () => {
+
+            if (window.sidebarInitialized) return;
+            window.sidebarInitialized = true;
+
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebarToggle');
+            const mainContent = document.getElementById('mainContent');
+
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+
+                if (sidebar.classList.contains('collapsed')) {
+                    sidebar.style.width = '65px';
+                    toggleBtn.querySelector('i').classList.replace('bi-chevron-left', 'bi-chevron-right');
+                } else {
+                    sidebar.style.width = '250px';
+                    toggleBtn.querySelector('i').classList.replace('bi-chevron-right', 'bi-chevron-left');
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
