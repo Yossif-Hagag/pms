@@ -2,14 +2,10 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Tasks Board</h2>
-        @can('create task')
-            <a href="{{ route('tasks.create') }}" class="btn btn-primary">Add Task</a>
-        @endcan
+        {{-- @can('create task') --}}
+        <a wire:navigate href="{{ route('tasks.create') }}" class="btn btn-primary">Add Task</a>
+        {{-- @endcan --}}
     </div>
-
-    @if (session()->has('message'))
-        <div class="alert alert-success">{{ session('message') }}</div>
-    @endif
 
     <div wire:loading wire:target="delete" class="text-center mb-3">
         <div class="spinner-border text-primary" role="status">
@@ -29,18 +25,21 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     <div class="fw-bold">{{ $task->title }}</div>
-                                    <div class="text-muted small">{{ $task->project->name }}</div>
-                                    <div class="text-muted small">Assigned: {{ $task->assignedUser?->name ?? 'N/A' }}
+                                    <div class="text-muted small"><span class="fw-bold">Project:
+                                        </span>{{ $task->project->name }}</div>
+                                    <div class="text-muted small"><span class="fw-bold">Assigned:
+                                        </span>{{ $task->assignedUser?->name ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <div class="btn-group btn-group-sm">
-                                    @can('edit task')
-                                        <a href="{{ route('tasks.edit', $task) }}" class="btn btn-outline-primary">Edit</a>
-                                    @endcan
-                                    @can('delete task')
-                                        <button wire:click="delete({{ $task->id }})"
-                                            class="btn btn-outline-danger">Delete</button>
-                                    @endcan
+                                    {{-- @can('edit task') --}}
+                                    <a wire:navigate href="{{ route('tasks.edit', $task) }}"
+                                        class="btn btn-outline-primary">Edit</a>
+                                    {{-- @endcan --}}
+                                    {{-- @can('delete task') --}}
+                                    <button wire:navigate wire:click="delete({{ $task->id }})"
+                                        class="btn btn-outline-danger">Delete</button>
+                                    {{-- @endcan --}}
                                 </div>
                             </li>
                         @endforeach

@@ -5,26 +5,17 @@ namespace App\Livewire\Projects;
 use App\Models\Project;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ProjectIndex extends Component
 {
-    public $projects;
+    use WithPagination;
 
-    public function mount()
-    {
-        $this->loadProjects();
-    }
+    protected $paginationTheme = 'bootstrap';
 
-    public function loadProjects()
-    {
-        $this->projects = Project::with('user', 'tasks')->get();
-    }
+    public $perPage = 8;
 
     #[On('refreshList')]
-    public function refreshList()
-    {
-        $this->loadProjects();
-    }
 
     #[On('delete-project')]
     public function deleteProject($id)
@@ -46,11 +37,13 @@ class ProjectIndex extends Component
             'type' => 'success',
             'message' => 'Project deleted successfully!',
         ]);
-        $this->loadProjects();
+        $this->resetPage();
     }
 
     public function render()
     {
-        return view('livewire.projects.project-index');
+        return view('livewire.projects.project-index', [
+            'projects' => Project::with('user', 'tasks')->paginate($this->perPage),
+        ]);
     }
 }

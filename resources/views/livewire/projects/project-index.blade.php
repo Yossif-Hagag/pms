@@ -7,31 +7,6 @@
         {{-- @endcan --}}
     </div>
 
-    @if (session()->has('message'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('message') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if (session()->has('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
     <div wire:loading wire:target="delete" class="text-center mb-3">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -74,8 +49,8 @@
                             </a>
                             {{-- @endcan --}}
                             {{-- @can('delete project') --}}
-                            <button wire:click="$dispatch('confirm-delete', { id: {{ $project->id }} })"
-                                class="btn btn-sm btn-danger">
+                            <button wire:click="$dispatch('confirm-delete', { id: '{{ $project->id }}' })"
+                                wire:loading.attr="disabled" class="btn btn-sm btn-danger">
                                 <i class="bi bi-trash"></i>
                             </button>
 
@@ -86,5 +61,9 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="mt-3">
+            {{ $projects->links() }}
+        </div>
     </div>
 </div>

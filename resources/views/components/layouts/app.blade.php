@@ -16,8 +16,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-
-
+    <!-- Custom Styles -->
     <style>
         #sidebar.collapsed .nav-link span,
         #sidebar.collapsed span.linkTitles {
@@ -36,12 +35,14 @@
         }
 
         #sidebar .nav-link.active {
-            background-color: #0d6efd;
+            --tw-bg-opacity: 1;
+            background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
             color: white !important;
         }
 
         #sidebar .nav-link.active:hover {
-            background-color: #0d6efd;
+            --tw-bg-opacity: 1;
+            background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
             color: white !important;
         }
 
@@ -54,6 +55,14 @@
             background-color: #e9ecef;
             color: red !important;
         }
+
+        .arrow {
+            --tw-bg-opacity: 1;
+            background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+            width: 35px;
+            height: 35px;
+            z-index: 999;
+        }
     </style>
 
 
@@ -65,24 +74,6 @@
 </head>
 
 <body class="font-sans antialiased">
-    {{-- <div class="min-h-screen bg-light">
-        <livewire:layout.navigation />
-
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="container py-4">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
-
-        <!-- Page Content -->
-        <main class="container my-4">
-            {{ $slot }}
-        </main>
-    </div> --}}
-
     <div class="d-flex position-relative">
 
         <!-- Sidebar -->
@@ -112,6 +103,12 @@
                         </a>
                     </li>
                     <li class="nav-item mb-1">
+                        <a wire:navigate href="{{ route('tasks.board') }}"
+                            class="nav-link text-black {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                            <i class="bi bi-check2-square me-2"></i><span class="linkTitles"> Tasks</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1">
                         <a wire:navigate href="{{ route('profile') }}"
                             class="nav-link text-black {{ request()->routeIs('profile') ? 'active' : '' }}">
                             <i class="bi bi-person-circle me-2"></i><span class="linkTitles"> Profile</span>
@@ -125,8 +122,7 @@
 
                 <!-- Toggle Arrow -->
                 <button id="sidebarToggle"
-                    class="btn btn-light position-absolute top-50 end-0 translate-middle-y rounded-circle shadow-sm d-flex justify-content-center align-content-center"
-                    style="width: 35px; height: 35px; z-index: 999;color:#0d6efd">
+                    class="arrow btn btn-light position-absolute top-50 end-0 translate-middle-y rounded-circle shadow-sm d-flex justify-content-center align-content-center">
                     <i class="bi bi-chevron-left"></i>
                 </button>
             </div>
@@ -185,13 +181,38 @@
             });
         });
     </script>
-
-
-
-
     <script>
         document.addEventListener('livewire:init', () => {
 
+            Livewire.on('store-toast', (payload) => {
+                const data = Array.isArray(payload) ? payload[0] : payload;
+                localStorage.setItem('toast', JSON.stringify(data));
+            });
+
+            window.addEventListener('livewire:navigated', () => {
+                const toast = localStorage.getItem('toast');
+                if (!toast) return;
+
+                const data = JSON.parse(toast);
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: data.type ?? 'success',
+                    title: data.message ?? '',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+
+                localStorage.removeItem('toast');
+            });
+
+        });
+    </script>
+    {{-- Custom Styles --}}
+    <script>
+        document.addEventListener('livewire:init', () => {
             if (window.sidebarInitialized) return;
             window.sidebarInitialized = true;
 
@@ -212,7 +233,6 @@
             });
         });
     </script>
-
 </body>
 
 </html>

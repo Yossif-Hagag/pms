@@ -3,19 +3,38 @@
 namespace App\Livewire\Tasks;
 
 use App\Models\Task;
+use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TaskBoard extends Component
 {
-    public $tasks;
+    use WithPagination;
 
-    public function mount()
+    protected $paginationTheme = 'bootstrap';
+
+    public $perPage = 8;
+
+    #[On('refreshList')]
+
+    #[On('delete-task')]
+    public function deleteTask($id)
     {
-        $this->tasks = Task::with('project', 'assignedUser')->get();
+        $task = Task::findOrFail($id);
+
+        $task->delete();
+
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => 'Task deleted successfully!',
+        ]);
+        $this->resetPage();
     }
 
     public function render()
     {
-        return view('livewire.tasks.task-board');
+        return view('livewire.tasks.task-board', [
+            'tasks' => Task::with('project', 'assignedUser')->paginate($this->perPage),
+        ]);
     }
 }
