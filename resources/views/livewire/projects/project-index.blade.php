@@ -3,7 +3,8 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="fs-4 fw-bold">Projects Dashboard</h1>
         {{-- @can('create project') --}}
-        <a wire:navigate href="{{ route('projects.create') }}" class="btn btn-success">Create Project</a>
+        <a wire:navigate href="{{ route('projects.create') }}" class="btn btn-success"><i
+                class="bi bi-plus-circle me-1"></i> Add Project</a>
         {{-- @endcan --}}
     </div>
 

@@ -91,9 +91,12 @@ class TaskForm extends Component
             ]);
         }
 
-        session()->flash('message', 'Task saved!');
+        $this->dispatch('store-toast', [
+            'type' => 'success',
+            'message' => 'Task saved successfully!',
+        ]);
 
-        return redirect()->route('tasks.board');
+        $this->redirect(route('tasks.board'), navigate: true);
     }
 
     public function render()

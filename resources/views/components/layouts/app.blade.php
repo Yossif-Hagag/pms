@@ -77,7 +77,7 @@
     <div class="d-flex position-relative">
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="bg-white shadow vh-100 position-relative"
+        <aside id="sidebar" class="bg-white shadow position-relative min-vh-100"
             style="width: 250px; transition: all 0.3s;">
             <div class="d-flex flex-column h-100 px-1">
 
@@ -140,6 +140,7 @@
     @livewireScripts
     {{-- SweetAlert Js --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- Delete Confirmation Script --}}
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('confirm-delete', ({
@@ -164,6 +165,7 @@
             });
         });
     </script>
+    {{-- Toast Script --}}
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('toast', (payload) => {
@@ -181,6 +183,7 @@
             });
         });
     </script>
+    {{-- Persistent Toast Script --}}
     <script>
         document.addEventListener('livewire:init', () => {
 
@@ -210,28 +213,38 @@
 
         });
     </script>
-    {{-- Custom Styles --}}
+    {{-- Sidebar Toggle Script --}}
     <script>
-        document.addEventListener('livewire:init', () => {
-            if (window.sidebarInitialized) return;
-            window.sidebarInitialized = true;
-
+        function bindSidebarToggle() {
             const sidebar = document.getElementById('sidebar');
             const toggleBtn = document.getElementById('sidebarToggle');
             const mainContent = document.getElementById('mainContent');
+
+            if (!sidebar || !toggleBtn) return;
+
+            // Prevent multiple bindings
+            if (toggleBtn.dataset.bound === '1') return;
+            toggleBtn.dataset.bound = '1';
 
             toggleBtn.addEventListener('click', () => {
                 sidebar.classList.toggle('collapsed');
 
                 if (sidebar.classList.contains('collapsed')) {
                     sidebar.style.width = '65px';
-                    toggleBtn.querySelector('i').classList.replace('bi-chevron-left', 'bi-chevron-right');
+                    toggleBtn.querySelector('i')
+                        ?.classList.replace('bi-chevron-left', 'bi-chevron-right');
                 } else {
                     sidebar.style.width = '250px';
-                    toggleBtn.querySelector('i').classList.replace('bi-chevron-right', 'bi-chevron-left');
+                    toggleBtn.querySelector('i')
+                        ?.classList.replace('bi-chevron-right', 'bi-chevron-left');
                 }
             });
-        });
+        }
+
+        //first load
+        document.addEventListener('DOMContentLoaded', bindSidebarToggle);
+        //after Livewire navigation
+        document.addEventListener('livewire:navigated', bindSidebarToggle);
     </script>
 </body>
 
