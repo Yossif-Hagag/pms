@@ -39,9 +39,9 @@ class TaskForm extends Component
         if ($task) {
             $this->task = $task;
             $this->title = $task->title;
+            $this->status = $task->status?->value;
+            $this->priority = $task->priority?->value;
             $this->description = $task->description;
-            $this->status = $task->status;
-            $this->priority = $task->priority;
             $this->due_date = $task->due_date;
             $this->project_id = $task->project_id;
             $this->assigned_to = $task->assigned_to;
