@@ -17,7 +17,7 @@
                 <form wire:submit.prevent="save">
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-3" id="title" wire:model.defer="title"
+                        <input type="text" class="form-control rounded-3" id="title" wire:model="title"
                             placeholder="Task Title">
                         <label for="title">Task Title</label>
                         @error('title')
@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <textarea class="form-control rounded-3" id="description" wire:model.defer="description" placeholder="Description"
+                        <textarea class="form-control rounded-3" id="description" wire:model="description" placeholder="Description"
                             style="height: 110px"></textarea>
                         <label for="description">Description</label>
                         @error('description')
@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <select class="form-select rounded-3" id="status" wire:model.defer="status">
+                        <select class="form-select rounded-3" id="status" wire:model="status">
                             <option value="">Select Status</option>
                             @foreach ($statusOptions as $statusOption)
                                 <option value="{{ $statusOption['value'] }}">
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <select class="form-select rounded-3" id="priority" wire:model.defer="priority">
+                        <select class="form-select rounded-3" id="priority" wire:model="priority">
                             <option value="">Select Priority</option>
                             @foreach ($priorityOptions as $priorityOption)
                                 <option value="{{ $priorityOption['value'] }}">
@@ -65,7 +65,16 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <select class="form-select rounded-3" id="project_id" wire:model.defer="project_id">
+                        <input type="date" class="form-control rounded-3" id="due_date" wire:model="due_date"
+                            placeholder="Due Date">
+                        <label for="due_date">Due Date</label>
+                        @error('due_date')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-select rounded-3" id="project_id" wire:model="project_id">
                             <option value="">Select Project</option>
                             @foreach ($projects as $project)
                                 <option value="{{ $project->id }}">
@@ -80,7 +89,7 @@
                     </div>
 
                     <div class="form-floating mb-4">
-                        <select class="form-select rounded-3" id="assigned_to" wire:model.defer="assigned_to">
+                        <select class="form-select rounded-3" id="assigned_to" wire:model="assigned_to">
                             <option value="">Select User</option>
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}">

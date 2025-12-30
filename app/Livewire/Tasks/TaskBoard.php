@@ -13,15 +13,12 @@ class TaskBoard extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $perPage = 8;
-
     #[On('refreshList')]
 
     #[On('delete-task')]
     public function deleteTask($id)
     {
         $task = Task::findOrFail($id);
-
         $task->delete();
 
         $this->dispatch('toast', [
@@ -34,7 +31,7 @@ class TaskBoard extends Component
     public function render()
     {
         return view('livewire.tasks.task-board', [
-            'tasks' => Task::with('project', 'assignedUser')->paginate($this->perPage),
+            'tasks' => Task::with('project', 'assignedUser')->get(),
         ]);
     }
 }

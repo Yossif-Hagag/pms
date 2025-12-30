@@ -163,6 +163,28 @@
                     }
                 });
             });
+
+            Livewire.on('confirm-delete', ({
+                id
+            }) => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This task will be deleted permanently!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('delete-task', {
+                            id: id
+                        });
+                    }
+                });
+            });
+
         });
     </script>
     {{-- Toast Script --}}

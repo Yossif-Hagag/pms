@@ -11,21 +11,21 @@ use Livewire\Component;
 
 class TaskForm extends Component
 {
-    public $task;
+    public ?Task $task = null;
 
-    public $title;
+    public ?string $title = null;
 
-    public $description;
+    public ?string $description = null;
 
-    public $status;
+    public ?string $status = null;
 
-    public $priority;
+    public ?string $priority = null;
 
-    public $due_date;
+    public ?string $due_date = null;
 
-    public $project_id;
+    public ?int $project_id = null;
 
-    public $assigned_to;
+    public ?int $assigned_to = null;
 
     public $projects;
 
@@ -39,12 +39,16 @@ class TaskForm extends Component
         if ($task) {
             $this->task = $task;
             $this->title = $task->title;
-            $this->status = $task->status?->value;
-            $this->priority = $task->priority?->value;
+            $this->status = $task->status->value;
+            $this->priority = $task->priority->value;
             $this->description = $task->description;
-            $this->due_date = $task->due_date;
+            $this->due_date = $task->due_date?->format('Y-m-d');
             $this->project_id = $task->project_id;
             $this->assigned_to = $task->assigned_to;
+        } else {
+            $this->status = TaskStatus::Todo->value;
+            $this->priority = TaskPriority::Low->value;
+            $this->due_date = now()->format('Y-m-d');
         }
     }
 
@@ -69,26 +73,20 @@ class TaskForm extends Component
             'assigned_to' => 'nullable|exists:users,id',
         ]);
 
+        $data = [
+            'title' => $this->title,
+            'description' => $this->description,
+            'status' => TaskStatus::from($this->status),
+            'priority' => TaskPriority::from($this->priority),
+            'due_date' => $this->due_date,
+            'project_id' => $this->project_id,
+            'assigned_to' => $this->assigned_to,
+        ];
+
         if ($this->task) {
-            $this->task->update([
-                'title' => $this->title,
-                'description' => $this->description,
-                'status' => $this->status,
-                'priority' => $this->priority,
-                'due_date' => $this->due_date,
-                'project_id' => $this->project_id,
-                'assigned_to' => $this->assigned_to,
-            ]);
+            $this->task->update($data);
         } else {
-            Task::create([
-                'title' => $this->title,
-                'description' => $this->description,
-                'status' => $this->status,
-                'priority' => $this->priority,
-                'due_date' => $this->due_date,
-                'project_id' => $this->project_id,
-                'assigned_to' => $this->assigned_to,
-            ]);
+            $task = Task::create($data);
         }
 
         $this->dispatch('store-toast', [
