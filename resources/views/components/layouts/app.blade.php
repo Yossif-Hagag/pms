@@ -112,7 +112,7 @@
                 <a wire:navigate href="{{ route('dashboard') }}"
                     class="mmx-2 my-3 d-flex align-items-center mb-5 text-decoration-none">
                     <x-application-logo class="me-2" style="height: 40px; width:auto;" />
-                    <span class="fs-5 fw-bold linkTitles mx-2">PMS</span>
+                    <span class="fs-5 fw-bold linkTitles mx-2 text-dark">PMS</span>
                 </a>
 
                 <!-- Navigation Links -->
