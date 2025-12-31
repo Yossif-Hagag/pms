@@ -5,6 +5,7 @@ use App\Livewire\Projects\ProjectIndex;
 use App\Livewire\Projects\ProjectView;
 use App\Livewire\Tasks\TaskBoard;
 use App\Livewire\Tasks\TaskForm;
+use App\Livewire\Tasks\TaskView;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -21,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tasks', TaskBoard::class)->name('tasks.board');
     Route::get('/tasks/create', TaskForm::class)->name('tasks.create');
     Route::get('/tasks/{task}/edit', TaskForm::class)->name('tasks.edit');
+    Route::get('/tasks/{task}', TaskView::class)->name('tasks.view');
 });
 
 require __DIR__.'/auth.php';

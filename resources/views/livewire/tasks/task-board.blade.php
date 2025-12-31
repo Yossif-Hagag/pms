@@ -17,11 +17,11 @@
     <div class="row">
         @foreach (App\Enums\TaskStatus::options() as $status)
             <div class="col-md-4 mb-4">
-                <div class="card h-100">
+                <div class="card vh-100-minus-12em">
                     <div class="card-header text-capitalize font-weight-bold">
                         {{ $status['label'] }}
                     </div>
-                    <ul class="list-group list-group-flush vh-100 overflow-auto">
+                    <ul class="list-group list-group-flush overflow-auto">
                         @foreach ($tasks->where('status', $status['value']) as $task)
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
@@ -33,14 +33,20 @@
                                     </div>
                                 </div>
                                 <div class="btn-group btn-group-sm">
+                                    {{-- @can('view task') --}}
+                                    <a wire:navigate href="{{ route('tasks.view', $task) }}"
+                                        class="btn btn-outline-info" wire:loading.attr="disabled">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    {{-- @endcan --}}
                                     {{-- @can('edit task') --}}
                                     <a wire:navigate href="{{ route('tasks.edit', $task) }}"
-                                        wire:loading.attr="disabled" class="btn btn-outline-primary"><i
-                                            class="bi bi-pencil"></i></a>
+                                        wire:loading.attr="disabled" class="btn btn-outline-primary"
+                                        style="border-width: 1px 0px 1px 0px;"><i class="bi bi-pencil"></i></a>
                                     {{-- @endcan --}}
                                     {{-- @can('delete task') --}}
                                     <button wire:navigate
-                                        wire:click="$dispatch('confirm-delete', { id: '{{ $task->id }}' })"
+                                        wire:click="$dispatch('confirm-delete-task', { id: '{{ $task->id }}' })"
                                         wire:loading.attr="disabled" class="btn btn-outline-danger"><i
                                             class="bi bi-trash"></i></button>
                                     {{-- @endcan --}}

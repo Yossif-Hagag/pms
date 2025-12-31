@@ -50,7 +50,7 @@
                             </a>
                             {{-- @endcan --}}
                             {{-- @can('delete project') --}}
-                            <button wire:click="$dispatch('confirm-delete', { id: '{{ $project->id }}' })"
+                            <button wire:click="$dispatch('confirm-delete-project', { id: '{{ $project->id }}' })"
                                 wire:loading.attr="disabled" class="btn btn-sm btn-danger">
                                 <i class="bi bi-trash"></i>
                             </button>

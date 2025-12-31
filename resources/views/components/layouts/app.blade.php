@@ -18,9 +18,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom Styles -->
     <style>
+        #sidebar {
+            width: 250px;
+            transition: width 0.3s ease;
+            overflow: hidden;
+        }
+
+        #sidebar.collapsed {
+            width: 70px;
+        }
+
+        #sidebar .linkTitles,
+        #sidebar .nav-link span {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            white-space: nowrap;
+        }
+
         #sidebar.collapsed .nav-link span,
         #sidebar.collapsed span.linkTitles {
             display: none;
+            pointer-events: none;
+        }
+
+        #sidebar.collapsed .nav-item a,
+        #sidebar.collapsed .nav-pills .nav-item.logoutList {
+            width: 3em;
+            height: 2.5rem;
         }
 
         #sidebarToggle {
@@ -63,6 +86,10 @@
             height: 35px;
             z-index: 999;
         }
+
+        .vh-100-minus-12em {
+            height: calc(100vh - 12em);
+        }
     </style>
 
 
@@ -77,8 +104,8 @@
     <div class="d-flex position-relative">
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="bg-white shadow position-relative min-vh-100"
-            style="width: 250px; transition: all 0.3s;">
+        <aside id="sidebar" class="sidebar bg-white shadow position-relative min-vh-100"
+            style="transition: all 0.3s;">
             <div class="d-flex flex-column h-100 px-1">
 
                 <!-- Logo -->
@@ -90,25 +117,25 @@
 
                 <!-- Navigation Links -->
                 <ul class="nav nav-pills flex-column">
-                    <li class="nav-item mb-1">
+                    <li class="nav-item mb-1 mx-1">
                         <a wire:navigate href="{{ route('dashboard') }}"
                             class="nav-link text-black {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                             <i class="bi bi-speedometer2 me-2"></i><span class="linkTitles"> Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item mb-1">
+                    <li class="nav-item mb-1 mx-1">
                         <a wire:navigate href="{{ route('projects.index') }}"
                             class="nav-link text-black {{ request()->routeIs('projects.*') ? 'active' : '' }}">
                             <i class="bi bi-kanban me-2"></i><span class="linkTitles"> Projects</span>
                         </a>
                     </li>
-                    <li class="nav-item mb-1">
+                    <li class="nav-item mb-1 mx-1">
                         <a wire:navigate href="{{ route('tasks.board') }}"
                             class="nav-link text-black {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
                             <i class="bi bi-check2-square me-2"></i><span class="linkTitles"> Tasks</span>
                         </a>
                     </li>
-                    <li class="nav-item mb-1">
+                    <li class="nav-item mb-1 mx-1">
                         <a wire:navigate href="{{ route('profile') }}"
                             class="nav-link text-black {{ request()->routeIs('profile') ? 'active' : '' }}">
                             <i class="bi bi-person-circle me-2"></i><span class="linkTitles"> Profile</span>
@@ -143,7 +170,7 @@
     {{-- Delete Confirmation Script --}}
     <script>
         document.addEventListener('livewire:init', () => {
-            Livewire.on('confirm-delete', ({
+            Livewire.on('confirm-delete-project', ({
                 id
             }) => {
                 Swal.fire({
@@ -164,7 +191,7 @@
                 });
             });
 
-            Livewire.on('confirm-delete', ({
+            Livewire.on('confirm-delete-task', ({
                 id
             }) => {
                 Swal.fire({
@@ -252,11 +279,11 @@
                 sidebar.classList.toggle('collapsed');
 
                 if (sidebar.classList.contains('collapsed')) {
-                    sidebar.style.width = '65px';
+                    // sidebar.style.width = '65px';
                     toggleBtn.querySelector('i')
                         ?.classList.replace('bi-chevron-left', 'bi-chevron-right');
                 } else {
-                    sidebar.style.width = '250px';
+                    // sidebar.style.width = '250px';
                     toggleBtn.querySelector('i')
                         ?.classList.replace('bi-chevron-right', 'bi-chevron-left');
                 }
