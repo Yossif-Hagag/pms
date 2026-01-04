@@ -81,7 +81,8 @@
 
                 <!-- Toggle Arrow -->
                 <button id="sidebarToggle"
-                    class="arrow btn btn-light position-absolute top-50 end-0 translate-middle-y rounded-circle shadow-sm d-flex justify-content-center align-content-center">
+                    class="arrow btn btn-light position-absolute end-0 translate-middle-y rounded-circle shadow-sm d-flex justify-content-center align-content-center"
+                    style="top: 75%;">
                     <i class="bi bi-chevron-left"></i>
                 </button>
             </div>
