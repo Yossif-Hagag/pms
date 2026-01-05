@@ -3,6 +3,7 @@
 use App\Livewire\Projects\ProjectForm;
 use App\Livewire\Projects\ProjectIndex;
 use App\Livewire\Projects\ProjectView;
+use App\Livewire\Roles\RoleForm;
 use App\Livewire\Roles\RolesIndex;
 use App\Livewire\Tasks\TaskBoard;
 use App\Livewire\Tasks\TaskForm;
@@ -15,7 +16,10 @@ Route::view('dashboard', 'dashboard')->middleware(['auth', 'verified'])->name('d
 Route::middleware(['auth'])->prefix('/dashboard')->group(function () {
     Route::view('profile', 'profile')->name('profile');
 
-    Route::get('/roles', RolesIndex::class)->name('roles.index')->middleware('role:admin');
+    Route::get('/roles', RolesIndex::class)->name('roles.index');
+    // ->middleware('role:admin')
+    Route::get('/roles/create', RoleForm::class)->name('roles.create');
+    // ->middleware('permission:create role')
 
     Route::get('/projects', ProjectIndex::class)->name('projects.index');
     Route::get('/projects/create', ProjectForm::class)->name('projects.create')->middleware('permission:create project');
