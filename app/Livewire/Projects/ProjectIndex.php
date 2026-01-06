@@ -15,8 +15,6 @@ class ProjectIndex extends Component
 
     public $perPage = 8;
 
-    #[On('refreshList')]
-
     #[On('delete-project')]
     public function deleteProject($id)
     {

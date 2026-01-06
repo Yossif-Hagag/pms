@@ -20,6 +20,8 @@ Route::middleware(['auth'])->prefix('/dashboard')->group(function () {
     // ->middleware('role:admin')
     Route::get('/roles/create', RoleForm::class)->name('roles.create');
     // ->middleware('permission:create role')
+    Route::get('/roles/{role}/edit', RoleForm::class)->name('roles.edit');
+    // ->middleware('permission:edit role')
 
     Route::get('/projects', ProjectIndex::class)->name('projects.index');
     Route::get('/projects/create', ProjectForm::class)->name('projects.create')->middleware('permission:create project');

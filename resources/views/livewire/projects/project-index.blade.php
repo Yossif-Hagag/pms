@@ -54,7 +54,6 @@
                                 wire:loading.attr="disabled" class="btn btn-sm btn-danger">
                                 <i class="bi bi-trash"></i>
                             </button>
-
                             {{-- @endcan --}}
                         </td>
 

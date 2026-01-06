@@ -13,8 +13,6 @@ class TaskBoard extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    #[On('refreshList')]
-
     #[On('delete-task')]
     public function deleteTask($id)
     {

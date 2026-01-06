@@ -21,6 +21,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'edit task']);
         Permission::create(['name' => 'view task']);
         Permission::create(['name' => 'delete task']);
+        Permission::create(['name' => 'create role']);
+        Permission::create(['name' => 'edit role']);
+        Permission::create(['name' => 'delete role']);
 
         $admin = Role::findByName('admin');
         $admin->givePermissionTo(Permission::all());

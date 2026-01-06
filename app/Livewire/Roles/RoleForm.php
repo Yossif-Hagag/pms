@@ -6,6 +6,9 @@ use Livewire\Component;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
+/**
+ * @property \Spatie\Permission\Models\Role|null $role
+ */
 class RoleForm extends Component
 {
     public ?Role $role = null;
@@ -14,8 +17,12 @@ class RoleForm extends Component
 
     public array $selectedPermissions = [];
 
+    public $permissions;
+
     public function mount(?Role $role = null)
     {
+        $this->permissions = Permission::all();
+
         if ($role) {
             $this->role = $role;
             $this->name = $role->name;
@@ -26,24 +33,31 @@ class RoleForm extends Component
     public function save()
     {
         $this->validate([
-            'name' => 'required|string|unique:roles,name,'.($this->role->id ?? 'null'),
+            'name' => 'required|string|max:255|unique:roles,name,'.($this->role->id ?? 'null'),
             'selectedPermissions' => 'array',
         ]);
 
-        $role = $this->role
-            ? tap($this->role)->update(['name' => $this->name])
-            : Role::create(['name' => $this->name]);
+        if ($this->role) {
+            $this->role->update(['name' => $this->name]);
+            $role = $this->role;
+        } else {
+            $role = Role::create(['name' => $this->name]);
+        }
 
         $role->syncPermissions($this->selectedPermissions);
 
-        return redirect()->route('roles.index')
-            ->with('success', 'Role saved successfully');
+        $this->dispatch('store-toast', [
+            'type' => 'success',
+            'message' => 'Role saved successfully!',
+        ]);
+
+        $this->redirect(route('roles.index'), navigate: true);
     }
 
     public function render()
     {
         return view('livewire.roles.form', [
-            'permissions' => Permission::all(),
+            'permissions' => $this->permissions,
         ]);
     }
 }
