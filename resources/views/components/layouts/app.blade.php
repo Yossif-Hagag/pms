@@ -56,6 +56,12 @@
                         </a>
                     </li>
                     <li class="nav-item mb-1 mx-1">
+                        <a wire:navigate href="{{ route('users.index') }}"
+                            class="nav-link text-black {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                            <i class="bi bi-people me-2"></i><span class="linkTitles"> Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-1 mx-1">
                         <a wire:navigate href="{{ route('projects.index') }}"
                             class="nav-link text-black {{ request()->routeIs('projects.*') ? 'active' : '' }}">
                             <i class="bi bi-kanban me-2"></i><span class="linkTitles"> Projects</span>
@@ -160,6 +166,27 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         Livewire.dispatch('delete-role', {
+                            id: id
+                        });
+                    }
+                });
+            });
+
+            Livewire.on('confirm-delete-user', ({
+                id
+            }) => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This user will be deleted permanently!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('delete-user', {
                             id: id
                         });
                     }

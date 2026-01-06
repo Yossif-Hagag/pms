@@ -25,7 +25,7 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
-            $roles = ['admin', 'manager', 'user'];
+            $roles = ['admin', 'manager', 'staff'];
             $user->assignRole($roles[array_rand($roles)]);
         });
     }

@@ -36,9 +36,9 @@
                         <i class="bi bi-box-arrow-in-right me-2"></i> Login
                     </a>
 
-                    <a wire:navigate href="{{ route('register') }}" class="btn btn-outline-secondary btn-lg px-4">
-                        <i class="bi bi-person-plus me-2"></i> Get Started
-                    </a>
+                    <p class="align-self-center text-muted mb-0">
+                        New users? Contact your administrator to get an account.
+                    </p>
                 </div>
             </div>
 

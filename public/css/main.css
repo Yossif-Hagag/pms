@@ -70,3 +70,18 @@
 .vh-100-minus-12em {
     height: calc(100vh - 12em);
 }
+
+.badge-admin {
+    background-color: #fde2e1 !important;
+    color: #b02a37 !important;
+}
+
+.badge-manager {
+    background-color: #e7f1ff !important;
+    color: #084298 !important;
+}
+
+.badge-staff {
+    background-color: #e6f4ea !important;
+    color: #1e7e34 !important;
+}

@@ -13,6 +13,14 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        Permission::create(['name' => 'create role']);
+        Permission::create(['name' => 'edit role']);
+        Permission::create(['name' => 'view roles']);
+        Permission::create(['name' => 'delete role']);
+        Permission::create(['name' => 'create user']);
+        Permission::create(['name' => 'edit user']);
+        Permission::create(['name' => 'view users']);
+        Permission::create(['name' => 'delete user']);
         Permission::create(['name' => 'create project']);
         Permission::create(['name' => 'edit project']);
         Permission::create(['name' => 'view project']);
@@ -21,9 +29,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'edit task']);
         Permission::create(['name' => 'view task']);
         Permission::create(['name' => 'delete task']);
-        Permission::create(['name' => 'create role']);
-        Permission::create(['name' => 'edit role']);
-        Permission::create(['name' => 'delete role']);
 
         $admin = Role::findByName('admin');
         $admin->givePermissionTo(Permission::all());
@@ -34,7 +39,7 @@ class PermissionSeeder extends Seeder
             'create task', 'edit task', 'view task',
         ]);
 
-        $user = Role::findByName('user');
+        $user = Role::findByName('staff');
         $user->givePermissionTo(['view project', 'view task']);
 
     }
