@@ -2,11 +2,11 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="fs-4 fw-bold">Tasks Board</h2>
-            {{-- @can('create task') --}}
-            <a wire:navigate href="{{ route('tasks.create') }}" class="btn btn-success"><i
-                    class="bi bi-plus-circle me-1"></i> Add
-                Task</a>
-            {{-- @endcan --}}
+            @can('create task')
+                <a wire:navigate href="{{ route('tasks.create') }}" class="btn btn-success"><i
+                        class="bi bi-plus-circle me-1"></i> Add
+                    Task</a>
+            @endcan
     </div>
 
     <div wire:loading wire:target="delete" class="text-center mb-3">
@@ -33,23 +33,23 @@
                                     </div>
                                 </div>
                                 <div class="btn-group btn-group-sm">
-                                    {{-- @can('view task') --}}
-                                    <a wire:navigate href="{{ route('tasks.view', $task) }}"
-                                        class="btn btn-outline-info" wire:loading.attr="disabled">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    {{-- @endcan --}}
-                                    {{-- @can('edit task') --}}
-                                    <a wire:navigate href="{{ route('tasks.edit', $task) }}"
-                                        wire:loading.attr="disabled" class="btn btn-outline-primary"
-                                        style="border-width: 1px 0px 1px 0px;"><i class="bi bi-pencil"></i></a>
-                                    {{-- @endcan --}}
-                                    {{-- @can('delete task') --}}
-                                    <button wire:navigate
-                                        wire:click="$dispatch('confirm-delete-task', { id: '{{ $task->id }}' })"
-                                        wire:loading.attr="disabled" class="btn btn-outline-danger"><i
-                                            class="bi bi-trash"></i></button>
-                                    {{-- @endcan --}}
+                                    @can('view task')
+                                        <a wire:navigate href="{{ route('tasks.view', $task) }}"
+                                            class="btn btn-outline-info rounded" wire:loading.attr="disabled">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    @endcan
+                                    @can('edit task')
+                                        <a wire:navigate href="{{ route('tasks.edit', $task) }}"
+                                            wire:loading.attr="disabled" class="btn btn-outline-primary rounded mx-1"><i
+                                                class="bi bi-pencil"></i></a>
+                                    @endcan
+                                    @can('delete task')
+                                        <button wire:navigate
+                                            wire:click="$dispatch('confirm-delete-task', { id: '{{ $task->id }}' })"
+                                            wire:loading.attr="disabled" class="btn btn-outline-danger rounded"><i
+                                                class="bi bi-trash"></i></button>
+                                    @endcan
                                 </div>
                             </li>
                         @endforeach

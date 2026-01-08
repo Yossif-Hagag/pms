@@ -2,10 +2,10 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0 fs-4 fw-bold">Roles & Permissions</h2>
 
-        {{-- @can('create role') --}}
-        <a wire:navigate href="{{ route('roles.create') }}" class="btn btn-success"><i class="bi bi-plus-circle me-1"></i>
-            New Role</a>
-        {{-- @endcan --}}
+        @can('create role')
+            <a wire:navigate href="{{ route('roles.create') }}" class="btn btn-success"><i class="bi bi-plus-circle me-1"></i>
+                New Role</a>
+        @endcan
     </div>
 
     <div class="row g-4">
@@ -23,19 +23,19 @@
 
                             @if ($role->name !== 'admin')
                                 <div class="btn-group" role="group" aria-label="Actions">
-                                    {{-- @can('edit role') --}}
-                                    <a wire:navigate href="{{ route('roles.edit', $role) }}"
-                                        class="btn btn-sm btn-outline-primary" wire:loading.attr="disabled"
-                                        style="border-width: 1px 0px 1px 1px;">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    {{-- @endcan --}}
-                                    {{-- @can('delete role') --}}
-                                    <button wire:click="$dispatch('confirm-delete-role', { id: '{{ $role->id }}' })"
-                                        wire:loading.attr="disabled" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                    {{-- @endcan --}}
+                                    @can('edit role')
+                                        <a wire:navigate href="{{ route('roles.edit', $role) }}"
+                                            class="btn btn-sm btn-outline-primary rounded mx-1"
+                                            wire:loading.attr="disabled">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    @endcan
+                                    @can('delete role')
+                                        <button wire:click="$dispatch('confirm-delete-role', { id: '{{ $role->id }}' })"
+                                            wire:loading.attr="disabled" class="btn btn-sm btn-outline-danger rounded">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    @endcan
                                 </div>
                             @endif
                         </div>

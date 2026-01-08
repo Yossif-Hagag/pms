@@ -2,11 +2,11 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold fs-4">Users</h2>
 
-        {{-- @can('create user') --}}
-        <a wire:navigate href="{{ route('users.create') }}" class="btn btn-success">
-            <i class="bi bi-person-plus me-1"></i> New User
-        </a>
-        {{-- @endcan --}}
+        @can('create user')
+            <a wire:navigate href="{{ route('users.create') }}" class="btn btn-success">
+                <i class="bi bi-person-plus me-1"></i> New User
+            </a>
+        @endcan
     </div>
 
     <div class="row g-4">
@@ -22,17 +22,16 @@
                             </h5>
 
                             <div class="btn-group btn-group-sm">
-                                {{-- @can('edit user') --}}
-                                <a wire:navigate href="{{ route('users.edit', $user) }}" wire:loading.attr="disabled"
-                                    class="btn btn-outline-primary" style="border-width: 1px 0px 1px 1px;"><i
-                                        class="bi bi-pencil"></i></a>
-                                {{-- @endcan --}}
-                                {{-- @can('delete user') --}}
-                                <button wire:navigate
-                                    wire:click="$dispatch('confirm-delete-user', { id: '{{ $user->id }}' })"
-                                    wire:loading.attr="disabled" class="btn btn-outline-danger"><i
-                                        class="bi bi-trash"></i></button>
-                                {{-- @endcan --}}
+                                @can('edit user')
+                                    <a wire:navigate href="{{ route('users.edit', $user) }}" wire:loading.attr="disabled"
+                                        class="btn btn-outline-primary rounded mx-1"><i class="bi bi-pencil"></i></a>
+                                @endcan
+                                @can('delete user')
+                                    <button wire:navigate
+                                        wire:click="$dispatch('confirm-delete-user', { id: '{{ $user->id }}' })"
+                                        wire:loading.attr="disabled" class="btn btn-outline-danger rounded"><i
+                                            class="bi bi-trash"></i></button>
+                                @endcan
                             </div>
                         </div>
 

@@ -32,7 +32,7 @@
                 </p>
 
                 <div class="d-flex gap-3">
-                    <a wire:navigate href="{{ route('login') }}" class="btn btn-primary btn-lg px-4">
+                    <a wire:navigate href="{{ route('login') }}" class="btn btn-primary btn-lg">
                         <i class="bi bi-box-arrow-in-right me-2"></i> Login
                     </a>
 

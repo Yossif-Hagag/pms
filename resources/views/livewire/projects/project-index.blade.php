@@ -2,10 +2,10 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="fs-4 fw-bold">Projects Dashboard</h1>
-        {{-- @can('create project') --}}
-        <a wire:navigate href="{{ route('projects.create') }}" class="btn btn-success"><i
-                class="bi bi-plus-circle me-1"></i> Add Project</a>
-        {{-- @endcan --}}
+        @can('create project')
+            <a wire:navigate href="{{ route('projects.create') }}" class="btn btn-success"><i
+                    class="bi bi-plus-circle me-1"></i> Add Project</a>
+        @endcan
     </div>
 
     <div wire:loading wire:target="delete" class="text-center mb-3">
@@ -37,24 +37,24 @@
                         <td>{{ $project->user?->name ?? 'N/A' }}</td>
                         <td>{{ $project->tasks->count() }}</td>
                         <td class="d-flex justify-content-center align-content-center">
-                            {{-- @can('view project') --}}
-                            <a wire:navigate href="{{ route('projects.view', $project) }}"
-                                class="btn btn-sm btn-info me-1" wire:loading.attr="disabled">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            {{-- @endcan --}}
-                            {{-- @can('edit project') --}}
-                            <a wire:navigate href="{{ route('projects.edit', $project) }}"
-                                class="btn btn-sm btn-primary me-1" wire:loading.attr="disabled">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            {{-- @endcan --}}
-                            {{-- @can('delete project') --}}
-                            <button wire:click="$dispatch('confirm-delete-project', { id: '{{ $project->id }}' })"
-                                wire:loading.attr="disabled" class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                            {{-- @endcan --}}
+                            @can('view project')
+                                <a wire:navigate href="{{ route('projects.view', $project) }}"
+                                    class="btn btn-sm btn-outline-info me-1" wire:loading.attr="disabled">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            @endcan
+                            @can('edit project')
+                                <a wire:navigate href="{{ route('projects.edit', $project) }}"
+                                    class="btn btn-sm btn-outline-primary me-1" wire:loading.attr="disabled">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            @endcan
+                            @can('delete project')
+                                <button wire:click="$dispatch('confirm-delete-project', { id: '{{ $project->id }}' })"
+                                    wire:loading.attr="disabled" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            @endcan
                         </td>
 
                     </tr>

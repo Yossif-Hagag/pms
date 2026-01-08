@@ -49,30 +49,38 @@
                             <i class="bi bi-speedometer2 me-2"></i><span class="linkTitles"> Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item mb-1 mx-1">
-                        <a wire:navigate href="{{ route('roles.index') }}"
-                            class="nav-link text-black {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                            <i class="bi bi-shield-shaded me-2"></i><span class="linkTitles"> Roles</span>
-                        </a>
-                    </li>
-                    <li class="nav-item mb-1 mx-1">
-                        <a wire:navigate href="{{ route('users.index') }}"
-                            class="nav-link text-black {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                            <i class="bi bi-people me-2"></i><span class="linkTitles"> Users</span>
-                        </a>
-                    </li>
-                    <li class="nav-item mb-1 mx-1">
-                        <a wire:navigate href="{{ route('projects.index') }}"
-                            class="nav-link text-black {{ request()->routeIs('projects.*') ? 'active' : '' }}">
-                            <i class="bi bi-kanban me-2"></i><span class="linkTitles"> Projects</span>
-                        </a>
-                    </li>
-                    <li class="nav-item mb-1 mx-1">
-                        <a wire:navigate href="{{ route('tasks.board') }}"
-                            class="nav-link text-black {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
-                            <i class="bi bi-check2-square me-2"></i><span class="linkTitles"> Tasks</span>
-                        </a>
-                    </li>
+                    @can('view roles')
+                        <li class="nav-item mb-1 mx-1">
+                            <a wire:navigate href="{{ route('roles.index') }}"
+                                class="nav-link text-black {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                                <i class="bi bi-shield-shaded me-2"></i><span class="linkTitles"> Roles</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('view users')
+                        <li class="nav-item mb-1 mx-1">
+                            <a wire:navigate href="{{ route('users.index') }}"
+                                class="nav-link text-black {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                                <i class="bi bi-people me-2"></i><span class="linkTitles"> Users</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('view project')
+                        <li class="nav-item mb-1 mx-1">
+                            <a wire:navigate href="{{ route('projects.index') }}"
+                                class="nav-link text-black {{ request()->routeIs('projects.*') ? 'active' : '' }}">
+                                <i class="bi bi-kanban me-2"></i><span class="linkTitles"> Projects</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('view task')
+                        <li class="nav-item mb-1 mx-1">
+                            <a wire:navigate href="{{ route('tasks.board') }}"
+                                class="nav-link text-black {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                                <i class="bi bi-check2-square me-2"></i><span class="linkTitles"> Tasks</span>
+                            </a>
+                        </li>
+                    @endcan
                     <li class="nav-item mb-1 mx-1">
                         <a wire:navigate href="{{ route('profile') }}"
                             class="nav-link text-black {{ request()->routeIs('profile') ? 'active' : '' }}">
